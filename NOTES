@@ -1,0 +1,112 @@
+
+ASSEMBLY=Assembly/PGSC0003DM/PGSC0003DMS.fa
+
+## First, we create the enhanced suffix array. We invoke gt
+## suffixerator with options -tis, -suf, -lcp, -des, -ssp and -sds
+## since LTRharvest needs the corresponding tables. Furthermore, we
+## specify -dna, as we process DNA-sequences.
+
+gt suffixerator -v \
+  -tis -suf -lcp -des -ssp -sds -dna \
+  -db        $ASSEMBLY \
+  -indexname $ASSEMBLY
+
+
+
+## Next we have a look at some kmer distributions using occratio
+
+gt tallymer occratio -v \
+  -minmersize 10 \
+  -maxmersize 20 \
+  -output unique nonunique nonuniquemulti total relative \
+  -esa       $ASSEMBLY \
+> occratio.10.20.dump
+
+
+
+## Lets pick 19-mers to build an index for searching against
+
+gt tallymer mkindex -v \
+  -mersize 19 \
+  -minocc 50 \
+  -esa       $ASSEMBLY \
+  -counts -pl \
+  -indexname idx.19.50
+
+
+
+## Finally we search a sequence against the index, with the idea of
+## identifying repeats in the sequence.
+
+## get a sequence for testing
+fastacmd \
+  -d $ASSEMBLY \
+  -s PGSC0003DMS000000001 \
+>    PGSC0003DMS000000001.fa
+
+gt tallymer search -v \
+  -output qseqnum qpos counts  \
+  -tyr idx.19.50 \
+  -q PGSC0003DMS000000001.fa
+
+
+
+## OK, looks good, now we just need a script to turn it into GFF
+
+## Get an index of sequence names from the fasta file
+
+grep "^>" \
+  $ASSEMBLY \
+>                     PGSC0003DMS.fa.name.idx
+
+
+gt tallymer search -v \
+  -output qseqnum qpos counts sequence \
+  -tyr idx.19.50 \
+  -q PGSC0003DMS000000001.fa \
+| ./search2gff3.plx
+
+
+gt tallymer search -v \
+  -output qseqnum qpos counts sequence \
+  -tyr idx.19.50 \
+  -q $ASSEMBLY \
+| ./search2gff3.plx \
+> repeat.gff3
+
+
+
+## Finally convert the GFF into a fasta file of repeat sequences
+
+./gff2fasta.plx > repeat.fa
+
+
+
+## Finishing touches: make the sequences NR and search them back
+## against the assembly
+
+
+
+
+
+
+## SGN pipeline:
+
+basically, we take a model (for example, S. lycopersicum 
+              genome), we run RepeatScout (it have 4 steps)
+16:10 <@aure> after the 2rd step we obtain a fasta file, we filter it with a 
+              RepeatScout script that use nseg and trf programs
+16:11 <@aure> we also add another step where we compare with a set of genes 
+              and we remove the repeats that have hits with these genes from 
+              the pre-repeat set
+16:12 <@aure> (they could be very big gene families)
+16:13 <@aure> and after that we run RepeatMasker over the model. It will give 
+              us the position and the count of the repeats
+16:13 <@aure> we are using the default parameters for RepeatScout
+16:16 <@aure> (except -l length of l-mer to consider = 15, becuase i saw that 
+              in a paper... that currently I don't remember where I found it)
+
+?
+
+http://genomebiology.com/2008/9/3/R61
+http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
