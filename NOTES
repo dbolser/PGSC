@@ -1,15 +1,27 @@
 
-ASSEMBLY=Assembly/PGSC0003DM/PGSC0003DMS.fa
+## PICK THE ASSEMBLY TO FILTER
+
+#ASSEMBLY=Assembly/PGSC0003DM/PGSC0003DMS.fa
+
+FAS_DIR=Tomato_Assembly
+FAS=S_lycopersicum_contigs.2.10.fa
+
+## INDEX OUT DIR
+IDX_DIR=Tomato_Index
+
+
 
 ## First, we create the enhanced suffix array. We invoke gt
 ## suffixerator with options -tis, -suf, -lcp, -des, -ssp and -sds
 ## since LTRharvest needs the corresponding tables. Furthermore, we
 ## specify -dna, as we process DNA-sequences.
 
-gt suffixerator -v \
+GT=/sw/bin/gt
+
+$GT suffixerator -v \
   -tis -suf -lcp -des -ssp -sds -dna \
-  -db        $ASSEMBLY \
-  -indexname $ASSEMBLY
+  -db        $FAS_DIR/$FAS \
+  -indexname $IDX_DIR/$FAS
 
 
 
@@ -17,10 +29,10 @@ gt suffixerator -v \
 
 gt tallymer occratio -v \
   -minmersize 10 \
-  -maxmersize 20 \
+  -maxmersize 50 \
   -output unique nonunique nonuniquemulti total relative \
-  -esa       $ASSEMBLY \
-> occratio.10.20.dump
+  -esa       $IDX_DIR/$FAS \
+> Data/$FAS.occratio.10.50.dump
 
 
 
