@@ -1,25 +1,45 @@
 #!/usr/bin/perl -w
 
 use strict;
+use Getopt::Long;
 
 ## Define some paramters
 my $k = 19;
 my $merge_thresh = $k;
 my $min_len_thresh = 50;
 
+my $seq_file;
+
+
+
+## Get options
+GetOptions
+  (
+   "k=i"    => \$k,
+   "min=i"  => \$min_len_thresh,
+   "file=s" => \$seq_file,
+  )
+  or die "failed to parse command line\n";
+
+die "pass a sequence file\n"
+  unless -s $seq_file;
+
 
 
 ## Read in sequence names
-warn "reading in sequence names\n";
+warn "reading in sequence names from $seq_file\n";
 my @seq_names;
 
-open NAMES, "<", "PGSC0003DMS.fa.name.idx"
-  or die "failed\n";
+open NAMES, '<', $seq_file
+  or die "failed to open $seq_file\n";
 
 while(<NAMES>){
-  chomp;
-  push @seq_names, $_;
+  next unless /^>/; chomp;
+  push @seq_names, substr($_, 1);
 }
+
+warn "read ", scalar(@seq_names), "\n";
+warn "OK\n";
 
 
 
@@ -36,7 +56,7 @@ while(<>){
   
   ## are we beginning a new sequence?
   if($seq != $p_seq){
-    warn $seq, "\n";
+    #warn $seq, "\n";
     
     # we should dump the current region
     &print_region( $p_seq, $p_pos, $i )
@@ -89,8 +109,8 @@ sub print_region () {
 	 '+',
 	 '.',
 	 join(';',
-	      'ID='. $j++,
-	      'Dbxref=SO:0000657'
+	      'ID='. sprintf("%08d", $j++),
+	      'dbxref=SO:0000657'
 	     ),
 	), "\n";
   

@@ -9,6 +9,9 @@ FAS=S_lycopersicum_contigs.2.10.fa
 ## INDEX OUT DIR
 IDX_DIR=Tomato_Index
 
+## REPEAT OUT DIR
+RPT_DIR=Tomato_Repeat
+
 
 
 ## First, we create the enhanced suffix array. We invoke gt
@@ -27,7 +30,7 @@ $GT suffixerator -v \
 
 ## Next we have a look at some kmer distributions using occratio
 
-gt tallymer occratio -v \
+$GT tallymer occratio -v \
   -minmersize 10 \
   -maxmersize 50 \
   -output unique nonunique nonuniquemulti total relative \
@@ -37,65 +40,48 @@ gt tallymer occratio -v \
 
 
 ## Lets pick 19-mers to build an index for searching against
+## Lets pick 41-mers to build an index for searching against
 
-gt tallymer mkindex -v \
-  -mersize 19 \
+$GT tallymer mkindex -v \
+  -mersize 41 \
   -minocc 50 \
-  -esa       $ASSEMBLY \
+  -esa       $IDX_DIR/$FAS \
   -counts -pl \
-  -indexname idx.19.50
+  -indexname $IDX_DIR/$FAS.idx.41.50
 
 
 
 ## Finally we search a sequence against the index, with the idea of
 ## identifying repeats in the sequence.
 
-## get a sequence for testing
-fastacmd \
-  -d $ASSEMBLY \
-  -s PGSC0003DMS000000001 \
->    PGSC0003DMS000000001.fa
-
-gt tallymer search -v \
+$GT tallymer search -v \
   -output qseqnum qpos counts  \
-  -tyr idx.19.50 \
-  -q PGSC0003DMS000000001.fa
+  -tyr $IDX_DIR/$FAS.idx.41.50 \
+  -q $FAS_DIR/$FAS \
+   > $IDX_DIR/$FAS.tmer
 
 
 
-## OK, looks good, now we just need a script to turn it into GFF
+## Now we just need a script to turn it into GFF
 
-## Get an index of sequence names from the fasta file
-
-grep "^>" \
-  $ASSEMBLY \
->                     PGSC0003DMS.fa.name.idx
-
-
-gt tallymer search -v \
-  -output qseqnum qpos counts sequence \
-  -tyr idx.19.50 \
-  -q PGSC0003DMS000000001.fa \
-| ./search2gff3.plx
-
-
-gt tallymer search -v \
-  -output qseqnum qpos counts sequence \
-  -tyr idx.19.50 \
-  -q $ASSEMBLY \
-| ./search2gff3.plx \
-> repeat.gff3
+./tallymer2gff3.plx -k 41 \
+  -f $FAS_DIR/$FAS \
+     $IDX_DIR/$FAS.tmer \
+   > $RPT_DIR/$FAS.rpt.gff
 
 
 
 ## Finally convert the GFF into a fasta file of repeat sequences
 
-./gff2fasta.plx > repeat.fa
+./gff2fasta.plx \
+  -s $FAS_DIR/$FAS \
+  -g $RPT_DIR/$FAS.rpt.gff \
+   > $RPT_DIR/$FAS.rpt.fa
 
 
 
 ## Finishing touches: make the sequences NR and search them back
-## against the assembly
+## against the assembly...
 
 
 
