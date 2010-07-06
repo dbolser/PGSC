@@ -37,7 +37,7 @@ my $seq_reader =
 my $seq_writer =
   Bio::SeqIO->new( -fh => \*STDOUT,
 		   -format => 'fasta',
-		   -width => 80
+		   -width => 100
 		 );
 
 my $gff_reader =

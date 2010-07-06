@@ -5,10 +5,17 @@ use Getopt::Long;
 
 ## Define some paramters
 my $k = 19;
-my $merge_thresh = $k;
 my $min_len_thresh = 50;
 
+my $merge_thresh = $k * 2;
+
 my $seq_file;
+
+
+
+## See code to understand
+die "some repeats will be missed\n"
+    if $min_len_thresh < $k;
 
 
 
@@ -43,9 +50,11 @@ warn "OK\n";
 
 
 
+
+
 ## Parse the output of the tallymer search
 
-my ($p_seq, $p_pos, $i) = (-1, -1, -1);
+my ($p_seq, $p_pos, $len, $depth) = (-1, -1, -1);
 
 while(<>){
   # ignore commets
@@ -59,11 +68,12 @@ while(<>){
     #warn $seq, "\n";
     
     # we should dump the current region
-    &print_region( $p_seq, $p_pos, $i )
-      if $i >= $min_len_thresh;
+    &print_region( $p_seq, $p_pos, $len, $depth / $len )
+      if $len >= $min_len_thresh;
     
     # and reset our counters
-    $i = 0;
+    $len = 0;
+    $depth = 0;
     $p_pos = $pos;
     $p_seq = $seq;
     next;
@@ -71,7 +81,8 @@ while(<>){
   
   ## if not, are we continuing a region?
   if($pos - $p_pos <= $merge_thresh){
-    $i += $pos - $p_pos;
+    $len += $pos - $p_pos;
+    $depth += $x;
     $p_pos = $pos;
     next;
   }
@@ -79,11 +90,12 @@ while(<>){
   ## if not, we must be leaving a region...
   
   # we should dump the current region
-  &print_region( $p_seq, $p_pos, $i )
-    if $i >= $min_len_thresh;
+  &print_region( $seq, $p_pos, $len, $depth / $len )
+    if $len >= $min_len_thresh;
   
   # and reset our counters
-  $i = 0;
+  $len = 0;
+  $depth = 0;
   $p_pos = $pos;
 }
 
@@ -94,7 +106,8 @@ warn "OK\n";
 sub print_region () {
   $p_seq = shift;
   $p_pos = shift;
-  $i = shift;
+  $len   = shift;
+  $depth = shift;
   
   our $j;
   
@@ -103,9 +116,9 @@ sub print_region () {
 	 $seq_names[$p_seq],
 	 'tallymer',
 	 'repeat_region',
-	 $p_pos - $i,
-	 $p_pos +  0,
-	 '1',
+	 $p_pos - $len,
+	 $p_pos + $k,
+	 sprintf("%d", $depth),
 	 '+',
 	 '.',
 	 join(';',

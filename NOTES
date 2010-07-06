@@ -1,16 +1,27 @@
 
 ## PICK THE ASSEMBLY TO FILTER
 
-#ASSEMBLY=Assembly/PGSC0003DM/PGSC0003DMS.fa
+## POTATO
+FAS_DIR=Potato_Assembly/PGSC0003DM
+FAS=PGSC0003DMS.fa
 
-FAS_DIR=Tomato_Assembly
-FAS=S_lycopersicum_contigs.2.10.fa
+# INDEX OUT DIR
+IDX_DIR=Potato_Index
 
-## INDEX OUT DIR
-IDX_DIR=Tomato_Index
+# REPEAT OUT DIR
+RPT_DIR=Potato_Repeat
 
-## REPEAT OUT DIR
-RPT_DIR=Tomato_Repeat
+
+
+# ## TOMATO
+# FAS_DIR=Tomato_Assembly
+# FAS=S_lycopersicum_contigs.2.10.fa
+
+# # INDEX OUT DIR
+# IDX_DIR=Tomato_Index
+
+# # REPEAT OUT DIR
+# RPT_DIR=Tomato_Repeat
 
 
 
@@ -31,11 +42,11 @@ $GT suffixerator -v \
 ## Next we have a look at some kmer distributions using occratio
 
 $GT tallymer occratio -v \
-  -minmersize 10 \
-  -maxmersize 50 \
+  -minmersize 25 \
+  -maxmersize 45 \
   -output unique nonunique nonuniquemulti total relative \
   -esa       $IDX_DIR/$FAS \
-> Data/$FAS.occratio.10.50.dump
+> Data/$FAS.occratio.25.45.dump
 
 
 
@@ -58,7 +69,7 @@ $GT tallymer search -v \
   -output qseqnum qpos counts  \
   -tyr $IDX_DIR/$FAS.idx.41.50 \
   -q $FAS_DIR/$FAS \
-   > $IDX_DIR/$FAS.tmer
+   > $IDX_DIR/$FAS.41.50.tmer
 
 
 
@@ -66,8 +77,8 @@ $GT tallymer search -v \
 
 ./tallymer2gff3.plx -k 41 \
   -f $FAS_DIR/$FAS \
-     $IDX_DIR/$FAS.tmer \
-   > $RPT_DIR/$FAS.rpt.gff
+     $IDX_DIR/$FAS.41.50.tmer \
+   > $RPT_DIR/$FAS.rpt.41.50.gff
 
 
 
@@ -75,42 +86,42 @@ $GT tallymer search -v \
 
 ./maskSeq.plx \
   -s $FAS_DIR/$FAS \
-  -g $RPT_DIR/$FAS.rpt.gff \
-   > $FAS_DIR/$FAS.kfilt.fa
+  -g $RPT_DIR/$FAS.rpt.41.50.gff \
+   > $FAS_DIR/$FAS.kfilt.41.50.fa
 
 
 
-## Optionally convert the GFF into a fasta file of repeat sequences
+# ## Optionally convert the GFF into a fasta file of repeat sequences
 
-./gff2fasta.plx \
-  -s $FAS_DIR/$FAS \
-  -g $RPT_DIR/$FAS.rpt.gff \
-   > $RPT_DIR/$FAS.rpt.fa
+# ./gff2fasta.plx \
+#   -s $FAS_DIR/$FAS \
+#   -g $RPT_DIR/$FAS.rpt.gff \
+#    > $RPT_DIR/$FAS.rpt.fa
 
-## Finishing touches: make the sequences NR and search them back
-## against the assembly...
-
-
+# ## Finishing touches: make the sequences NR and search them back
+# ## against the assembly...
 
 
 
-## SGN pipeline:
 
-basically, we take a model (for example, S. lycopersicum 
-              genome), we run RepeatScout (it have 4 steps)
-16:10 <@aure> after the 2rd step we obtain a fasta file, we filter it with a 
-              RepeatScout script that use nseg and trf programs
-16:11 <@aure> we also add another step where we compare with a set of genes 
-              and we remove the repeats that have hits with these genes from 
-              the pre-repeat set
-16:12 <@aure> (they could be very big gene families)
-16:13 <@aure> and after that we run RepeatMasker over the model. It will give 
-              us the position and the count of the repeats
-16:13 <@aure> we are using the default parameters for RepeatScout
-16:16 <@aure> (except -l length of l-mer to consider = 15, becuase i saw that 
-              in a paper... that currently I don't remember where I found it)
 
-?
+# ## SGN pipeline:
 
-http://genomebiology.com/2008/9/3/R61
-http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
+# basically, we take a model (for example, S. lycopersicum 
+#               genome), we run RepeatScout (it have 4 steps)
+# 16:10 <@aure> after the 2rd step we obtain a fasta file, we filter it with a 
+#               RepeatScout script that use nseg and trf programs
+# 16:11 <@aure> we also add another step where we compare with a set of genes 
+#               and we remove the repeats that have hits with these genes from 
+#               the pre-repeat set
+# 16:12 <@aure> (they could be very big gene families)
+# 16:13 <@aure> and after that we run RepeatMasker over the model. It will give 
+#               us the position and the count of the repeats
+# 16:13 <@aure> we are using the default parameters for RepeatScout
+# 16:16 <@aure> (except -l length of l-mer to consider = 15, becuase i saw that 
+#               in a paper... that currently I don't remember where I found it)
+
+# ?
+
+# http://genomebiology.com/2008/9/3/R61
+# http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
