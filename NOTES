@@ -71,18 +71,24 @@ $GT tallymer search -v \
 
 
 
-## Finally convert the GFF into a fasta file of repeat sequences
+## Finally mask the sequence using the repeats
+
+./maskSeq.plx \
+  -s $FAS_DIR/$FAS \
+  -g $RPT_DIR/$FAS.rpt.gff \
+   > $FAS_DIR/$FAS.kfilt.fa
+
+
+
+## Optionally convert the GFF into a fasta file of repeat sequences
 
 ./gff2fasta.plx \
   -s $FAS_DIR/$FAS \
   -g $RPT_DIR/$FAS.rpt.gff \
    > $RPT_DIR/$FAS.rpt.fa
 
-
-
 ## Finishing touches: make the sequences NR and search them back
 ## against the assembly...
-
 
 
 
