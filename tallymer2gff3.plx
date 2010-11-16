@@ -24,7 +24,7 @@ GetOptions
   (
    "k=i"    => \$k,
    "min=i"  => \$min_len_thresh,
-   "file=s" => \$seq_file,
+   "file|seq=s" => \$seq_file,
   )
   or die "failed to parse command line\n";
 

@@ -8,15 +8,15 @@ use Bio::SeqIO;
 my $verbose = 0;
 
 my $seq_file;
-my $gff_file;
+my $feature_file;
 
 
 
 ## Get options
 GetOptions
   (
-   "seq_file=s" => \$seq_file,
-   "gff_file=s" => \$gff_file,
+   "seq_file=s"     => \$seq_file,
+   "feature_file=s" => \$feature_file,
   )
   or die "failed to parse command line\n";
 
@@ -24,7 +24,7 @@ die "pass a sequence file\n"
   unless -s $seq_file;
 
 die "pass a GFF file\n"
-  unless -s $gff_file;
+  unless -s $feature_file;
 
 
 
@@ -34,7 +34,7 @@ warn "reading GFF\n";
 
 my %gff;
 
-open GFF, '<', $gff_file
+open GFF, '<', $feature_file
   or die "fail\n";
 
 while(<GFF>){
@@ -59,7 +59,8 @@ while(my $sobj = $seqio->next_seq){
   my $seqid = $sobj->id;
   
   unless(defined($gff{$seqid})){
-    warn "no repeats for $seqid\n";
+    warn "no repeats for $seqid\n"
+      if $verbose > 0;
     next;
   }
   
@@ -71,7 +72,7 @@ while(my $sobj = $seqio->next_seq){
     my ($start, $end, $attrs) = @$_;
     
     warn join("\t", $start, $end, $attrs), "\n"
-      if $verbose > 0;
+      if $verbose > 1;
     
     my %attrs = split(/=|;/, $attrs);
     

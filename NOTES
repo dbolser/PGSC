@@ -1,110 +1,271 @@
 
-ASSEMBLY=Assembly/PGSC0003DM/PGSC0003DMS.fa
+## PICK THE ASSEMBLY TO FILTER
+
+## POTATO
+FAS_DIR=Potato_Assembly/PGSC0003DM
+FAS=PGSC0003DMS
+FAS=PGSC0003DMB
+
+# INDEX OUT DIR
+IDX_DIR=Potato_Indexes
+
+# REPEAT OUT DIR
+RPT_DIR=Potato_Repeats
+
+
+
+## OR
+
+# ## TOMATO
+# FAS_DIR=Tomato_Assembly
+# FAS=S_lycopersicum_contigs.2.10
+
+# # INDEX OUT DIR
+# IDX_DIR=Tomato_Indexes
+
+# # REPEAT OUT DIR
+# RPT_DIR=Tomato_Repeats
+
+
+
+
+
+## PICK YOUR TOOL
+
+GT=/sw/bin/gt
+GT=/homes/dbolser/build/GT/bin/gt
+
+
+
+
 
 ## First, we create the enhanced suffix array. We invoke gt
 ## suffixerator with options -tis, -suf, -lcp, -des, -ssp and -sds
 ## since LTRharvest needs the corresponding tables. Furthermore, we
 ## specify -dna, as we process DNA-sequences.
 
-gt suffixerator -v \
+## No need to do this if we have already run it and we are just
+## changing parameters below!
+
+$GT suffixerator -v \
   -tis -suf -lcp -des -ssp -sds -dna \
-  -db        $ASSEMBLY \
-  -indexname Indexes/`basename $ASSEMBLY .fa`
+  -db $FAS_DIR/$FAS.fa \
+  -indexname $IDX_DIR/$FAS
+
+# md5sum $IDX_DIR/$FAS.{al1,des,sds,esq,ssp,suf,prj,lcp,llv}
+
+# f4d45f5788505ccfc21f8fd020bcb2a9  Potato_Indexes/PGSC0003DMS.al1
+# 8798db2e155d69b072c98a5cb8ddcb55  Potato_Indexes/PGSC0003DMS.des
+# 11977e2c5bfe1568532559303919d868  Potato_Indexes/PGSC0003DMS.sds
+# 141f11f00b937f454a09bb2abfc63021  Potato_Indexes/PGSC0003DMS.esq
+# eac4bc435f6d4f9ae1e4d838cf1f86af  Potato_Indexes/PGSC0003DMS.ssp
+# 40e4c2c6f1d93e0e910749616d5c0c05  Potato_Indexes/PGSC0003DMS.suf
+# b463f0eed888d06875ee975e74452069  Potato_Indexes/PGSC0003DMS.prj
+# 5a7532777f780a3d998996fd7f3e2ce5  Potato_Indexes/PGSC0003DMS.lcp
+# 193e414cee7549d01103ddc2049c90eb  Potato_Indexes/PGSC0003DMS.llv
+
+# f4d45f5788505ccfc21f8fd020bcb2a9  Potato_Indexes/PGSC0003DMB.al1
+# acc491970385202596c4c7bc24c6a62b  Potato_Indexes/PGSC0003DMB.des
+# cfe166be29c6b6f3c25820b3491f94dd  Potato_Indexes/PGSC0003DMB.sds
+# 41de029d54eb984511d027be76200095  Potato_Indexes/PGSC0003DMB.esq
+# 7dd461db2fd60ba67ab0692ab44fb161  Potato_Indexes/PGSC0003DMB.ssp
+# 662ddda9bead56bfb1c084d352641db9  Potato_Indexes/PGSC0003DMB.suf
+# 80a49f9f75d34120a295aea970f18530  Potato_Indexes/PGSC0003DMB.prj
+# ae6a2a3125d1746b3d6607b3ec41593c  Potato_Indexes/PGSC0003DMB.lcp
+# ecd5a591b4bcaa9fda69401f1dcc4ea5  Potato_Indexes/PGSC0003DMB.llv
 
 
 
-## Next we have a look at some kmer distributions using occratio
 
-gt tallymer occratio -v \
+
+## Next we have a look at some kmer distributions using occratio. No
+## need to repeat this if it's been done already and a decision made
+## below.
+
+$GT tallymer occratio -v \
   -minmersize 10 \
-  -maxmersize 20 \
+  -maxmersize 45 \
   -output unique nonunique nonuniquemulti total relative \
-  -esa       $ASSEMBLY \
-> occratio.10.20.dump
+  -esa $IDX_DIR/$FAS \
+> Data/$FAS.occratio.10.45.dump
+
+# md5sum Data/$FAS.occratio*
+# 558a76781a3971bf2598afcff6713a9b  Data/PGSC0003DMS.occratio.10.45.dump
+# 9794e634385b33bc54316277eed925d6  Data/PGSC0003DMS.occratio.10.45.fix
+
+# 5a5623c0dde75bc266a73592f12e71c5  Data/PGSC0003DMB.occratio.10.45.dump
+# b92cd84f1d7c936ca76e49199b147ded  Data/PGSC0003DMB.occratio.10.45.fix
 
 
 
-## Lets pick 19-mers to build an index for searching against
 
-gt tallymer mkindex -v \
-  -mersize 19 \
-  -minocc 50 \
-  -esa       $ASSEMBLY \
+
+## Lets pick 19-mers to build an index for searching against?
+## Lets pick 41-mers to build an index for searching against?
+
+MER=19
+#MER=41
+
+## Only care about kmers more frequent than this number in our index.
+
+MIN=50
+
+
+
+
+
+$GT tallymer mkindex -v \
+  -mersize $MER \
+  -minocc $MIN \
+  -esa $IDX_DIR/$FAS \
   -counts -pl \
-  -indexname idx.19.50
+  -indexname $IDX_DIR/$FAS.idx.$MER.$MIN
+
+# md5sum $IDX_DIR/$FAS.idx.19.50.{mer,mct,mbd}
+# be38cd7e058581b10b90835d170884d9  Potato_Indexes/PGSC0003DMS.idx.19.50.mer
+# 7f317cb50bbdc58ab43e1e8ae58c4237  Potato_Indexes/PGSC0003DMS.idx.19.50.mct
+# 88f95876da8106eafc414ccd971f3027  Potato_Indexes/PGSC0003DMS.idx.19.50.mbd
+
+# 4dae154f1867a9c872ee76a8d69cff38  Potato_Indexes/PGSC0003DMB.idx.19.50.mer
+# e638925f3da125f86eb9611bb29f17ae  Potato_Indexes/PGSC0003DMB.idx.19.50.mct
+# 5683d8960a8d8b47b4f989c605c84482  Potato_Indexes/PGSC0003DMB.idx.19.50.mbd
+
+# md5sum $IDX_DIR/$FAS.idx.41.50.{mer,mct,mbd}
+# 94579195ec54de608b041d2861077ff2  Potato_Indexes/PGSC0003DMS.idx.41.50.mer
+# 9989c1ec2b301813689c0d3730ab71be  Potato_Indexes/PGSC0003DMS.idx.41.50.mct
+# a97c28d2e43cba44572a4f8fbe95b531  Potato_Indexes/PGSC0003DMS.idx.41.50.mbd
+
+# 4cf6a8d8359e5afe2a67eec901119b21  Potato_Indexes/PGSC0003DMB.idx.41.50.mer
+# 467f0ab30c84597267ce32af62b57638  Potato_Indexes/PGSC0003DMB.idx.41.50.mct
+# 20c2cfdd67794c49bc3871696f48b57b  Potato_Indexes/PGSC0003DMB.idx.41.50.mbd
+
+
 
 
 
 ## Finally we search a sequence against the index, with the idea of
 ## identifying repeats in the sequence.
 
-## get a sequence for testing
-fastacmd \
-  -d $ASSEMBLY \
-  -s PGSC0003DMS000000001 \
->    PGSC0003DMS000000001.fa
+# ## Testing...
 
-gt tallymer search -v \
+# ## get a sequence for testing
+# fastacmd \
+#   -d $IDX_DIR/$FAS \
+#   -s PGSC0003DMS000000001 \
+# >    PGSC0003DMS000000001.fa
+
+# $GT tallymer search -v \
+#   -output qseqnum qpos counts sequence \
+#   -tyr $IDX_DIR/$FAS.idx.$MER.$MIN \
+#   -q PGSC0003DMS000000001.fa \
+# | ./tallymer2gff3.plx -seq PGSC0003DMS000000001.fa
+
+
+
+
+
+## OK
+
+$GT tallymer search -v \
   -output qseqnum qpos counts  \
-  -tyr idx.19.50 \
-  -q PGSC0003DMS000000001.fa
+  -tyr $IDX_DIR/$FAS.idx.$MER.$MIN \
+  -q $FAS_DIR/$FAS.fa \
+   > $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer
 
+# md5sum $RPT_DIR/$FAS.rpt.19.50.tmer
+# 09c5eeeb3924a372222faa7e69587a93  Potato_Repeats/PGSC0003DMS.rpt.19.50.tmer
+# 84ded64f990be7b5d8d43fb041e2790c  Potato_Repeats/PGSC0003DMB.rpt.19.50.tmer
 
-
-## OK, looks good, now we just need a script to turn it into GFF
-
-## Get an index of sequence names from the fasta file
-
-grep "^>" \
-  $ASSEMBLY \
->                     PGSC0003DMS.fa.name.idx
-
-
-gt tallymer search -v \
-  -output qseqnum qpos counts sequence \
-  -tyr idx.19.50 \
-  -q PGSC0003DMS000000001.fa \
-| ./search2gff3.plx
-
-
-gt tallymer search -v \
-  -output qseqnum qpos counts sequence \
-  -tyr idx.19.50 \
-  -q $ASSEMBLY \
-| ./search2gff3.plx \
-> repeat.gff3
-
-
-
-## Finally convert the GFF into a fasta file of repeat sequences
-
-./gff2fasta.plx > repeat.fa
-
-
-
-## Finishing touches: make the sequences NR and search them back
-## against the assembly
+# md5sum $RPT_DIR/$FAS.rpt.41.50.tmer
+# 6360c9dc515b9ff481c0dd200cdb1327  Potato_Repeats/PGSC0003DMS.rpt.41.50.tmer
+# 3c35950128d81378a5b65a757972b1b4  Potato_Repeats/PGSC0003DMB.rpt.41.50.tmer
 
 
 
 
 
+## Now we just need a script to process the tmer results into a GFF
+## format file
 
-## SGN pipeline:
+./tallymer2gff3.plx -k $MER \
+  -s $FAS_DIR/$FAS.fa \
+     $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer \
+   > $RPT_DIR/$FAS.rpt.$MER.$MIN.gff
 
-              basically, we take a model (for example, S. lycopersicum 
-              genome), we run RepeatScout (it have 4 steps)
-16:10 <@aure> after the 2rd step we obtain a fasta file, we filter it with a 
-              RepeatScout script that use nseg and trf programs
-16:11 <@aure> we also add another step where we compare with a set of genes 
-              and we remove the repeats that have hits with these genes from 
-              the pre-repeat set
-16:12 <@aure> (they could be very big gene families)
-16:13 <@aure> and after that we run RepeatMasker over the model. It will give 
-              us the position and the count of the repeats
-16:13 <@aure> we are using the default parameters for RepeatScout
-16:16 <@aure> (except -l length of l-mer to consider = 15, becuase i saw that 
-              in a paper... that currently I don't remember where I found it)
+# md5sum $RPT_DIR/$FAS.rpt.19.50.gff
+# fc10b990e2169c344cda690562550a33  Potato_Repeats/PGSC0003DMS.rpt.19.50.gff
+# b0df2f553a2a1e6a5045c0ea090312ec  Potato_Repeats/PGSC0003DMB.rpt.19.50.gff
 
-http://genomebiology.com/2008/9/3/R61
-http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
+# md5sum $RPT_DIR/$FAS.rpt.41.50.gff
+# 6e1466fd5d25c92c82e6bf42b268009f  Potato_Repeats/PGSC0003DMS.rpt.41.50.gff
+# d41d8cd98f00b204e9800998ecf8427e  Potato_Repeats/PGSC0003DMB.rpt.41.50.gff
+
+
+
+
+
+## Finally mask the sequence using the repeats
+
+./maskSeq.plx \
+  -s $FAS_DIR/$FAS.fa \
+  -f $RPT_DIR/$FAS.rpt.$MER.$MIN.gff \
+   > $FAS_DIR/$FAS.kfilt.$MER.$MIN.fa
+
+# md5sum $FAS_DIR/$FAS.kfilt.19.50.fa
+# 04a7c5141e51c39911476877329a493b  Potato_Assembly/PGSC0003DM/PGSC0003DMS.kfilt.19.50.fa
+# dc208fe83821bdc746e6a98531cce3ce  Potato_Assembly/PGSC0003DM/PGSC0003DMB.kfilt.19.50.fa
+
+# md5sum $FAS_DIR/$FAS.kfilt.41.50.fa
+# 9bb6d91c9cd04fedd6e817e82d695aa5  Potato_Assembly/PGSC0003DM/PGSC0003DMS.kfilt.41.50.fa
+# 6d6cb05b02b4bdd7cd16ed2d5e5a72a2  Potato_Assembly/PGSC0003DM/PGSC0003DMB.kfilt.41.50.fa
+
+
+
+
+
+## Optionally convert the GFF into a fasta file of repeat sequences
+
+./gff2fasta.plx \
+  -s $FAS_DIR/$FAS.fa \
+  -f $RPT_DIR/$FAS.rpt.$MER.$MIN.gff \
+   > $RPT_DIR/$FAS.rpt.$MER.$MIN.fa
+
+# md5sum $RPT_DIR/$FAS.rpt.19.50.fa
+# e99486ce3c84d353df143140f8b521a3  Potato_Repeats/PGSC0003DMS.rpt.19.50.fa
+# 5e8830a3ea6fb232c3d071699fbee26f  Potato_Repeats/PGSC0003DMB.rpt.19.50.fa
+
+# md5sum $RPT_DIR/$FAS.rpt.41.50.fa
+# 18cb90fa3e44008a39eb825a5c7b0d2b  Potato_Repeats/PGSC0003DMS.rpt.41.50.fa
+# 33c87da8b7452dd95827e0cd042a7871  Potato_Repeats/PGSC0003DMB.rpt.41.50.fa
+
+
+
+
+
+# ## Finishing touches: make the sequences NR and search them back
+# ## against the assembly...
+
+
+
+
+
+# ## SGN pipeline:
+
+#               basically, we take a model (for example, S. lycopersicum 
+#               genome), we run RepeatScout (it have 4 steps)
+# 16:10 <@aure> after the 2rd step we obtain a fasta file, we filter it with a 
+#               RepeatScout script that use nseg and trf programs
+# 16:11 <@aure> we also add another step where we compare with a set of genes 
+#               and we remove the repeats that have hits with these genes from 
+#               the pre-repeat set
+# 16:12 <@aure> (they could be very big gene families)
+# 16:13 <@aure> and after that we run RepeatMasker over the model. It will give 
+#               us the position and the count of the repeats
+# 16:13 <@aure> we are using the default parameters for RepeatScout
+# 16:16 <@aure> (except -l length of l-mer to consider = 15, becuase i saw that 
+#               in a paper... that currently I don't remember where I found it)
+
+# ?
+
+# http://genomebiology.com/2008/9/3/R61
+# http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
