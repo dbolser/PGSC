@@ -1,0 +1,23 @@
+
+library	x08WGS	10000	20000	(..............)_(left|right)
+pair	(.*)_left	(.*)_right
+
+library	x20WGS	12000	30000	(..............)_(left|right)
+pair	(.*)_left	(.*)_right
+
+
+
+library	DMBES	60000	180000	(LuSp\d{3}[A-P]\d{2})_(F|R)
+pair	(.*)_F	(.*)_R
+
+library	DMFOS	20000	60000	(.............)\.(TF|TR)
+pair	(.*)\.TF	(.*)\.TR
+
+
+
+library	RHBES	50000	200000	(RH......)_(F|R)
+pair	(.*)_F	(.*)_R
+
+library	SLBES	50000	200000	(\S+)_(F|R)
+pair	(.*)_F	(.*)_R
+
