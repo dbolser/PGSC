@@ -1,0 +1,240 @@
+
+## See also:
+# 
+
+
+## QUERY (FASTA)
+QUERY=Data/Solanum_phureja_DM.bac_ends.09242009.fsa
+
+## Assembly (DIR)
+ASSDIR=Assembly/PGSC0003DM
+
+## ASSEMBLY (SEQUENCE)
+ASSEMBLY=$ASSDIR/PGSC0003DMB.fa
+
+## ASSEMBLY (INDEX)
+SSAHAIDX=$ASSDIR/Indexes/SSAHA2/`basename $ASSEMBLY .fa`.sanger
+
+## OUT
+RESULTS=Results/`basename $ASSEMBLY .fa`_vs_`basename $QUERY .fsa`.ssaha
+
+## TOOLS
+SSAHA_B=/sw/local/src/dbolser/SSAHA/ssaha2Build
+SSAHA_R=/sw/local/src/dbolser/SSAHA/ssaha2
+
+
+
+## TEST! NB: We create the index below, if it doesn't exist here:
+
+ls \
+  $QUERY \
+  $ASSEMBLY \
+  $SSAHAIDX.size \
+  $RESULTS \
+  $SSAHA_B \
+  $SSAHA_R
+
+
+
+
+
+## Step 1) Index the assembly for SSAHA2 searching
+
+# $SSAHA_B \
+#  -save $SSAHAIDX \
+#        $ASSEMBLY
+
+
+
+
+
+## Step 2) Run the QUERY sequences against the ASSEMBLY
+
+# PWD=`pwd`
+
+# qsub \
+#   -q 64bit.q -b n -l ram=4000M \
+#   -o $PWD/$RESULTS.out \
+#   -e $PWD/$RESULTS.err \
+#   \
+# $PWD/runSSAHA.plx \
+#   $SSAHA_R \
+#   $PWD/$SSAHAIDX \
+#   $PWD/$QUERY \
+#   $PWD/$RESULTS
+
+$SSAHA_R -tags 0 \
+ -save $SSAHAIDX $QUERY \
+ | perl -ne '
+     print if /^\d/
+   ' \
+ > $RESULTS
+
+
+
+## Replace the white-space field terminators with tabs. Not required
+## if using 'runSSAHA'.
+
+# sed -ri 's/\s+/\t/g' $RESULTS
+
+
+
+
+
+## REMOVE ALIGNMENTS INVOLVING REPEATS.
+
+DF=~/BiO/Util/depth_filter.plx
+
+
+
+# ## TEST 'BOTH' ON CLUSTER
+# 
+# PWD=`pwd`
+# 
+# qsub \
+#   -q 64bit.q -b n -l ram=12000M \
+#   -o $PWD/$RESULTS.dfilt.out \
+#   -e $PWD/$RESULTS.dfilt.err \
+#   \
+# $DF -d 3 -c .80 -t both \
+#   $PWD/$RESULTS \
+# > $PWD/$RESULTS.dfilt.b.d3.c80
+
+
+
+## QUERY (RUNS)
+$DF -d 5 -c .80 -t query $RESULTS > $RESULTS.dfilt.q.d5.c80
+$DF -d 4 -c .80 -t query $RESULTS > $RESULTS.dfilt.q.d4.c80
+$DF -d 3 -c .80 -t query $RESULTS > $RESULTS.dfilt.q.d3.c80
+
+## This step removes a massive number of alignments!
+wc -l $RESULTS                  # 5912272
+wc -l $RESULTS.dfilt.q.d5.c80   #  198463
+wc -l $RESULTS.dfilt.q.d4.c80   #   
+wc -l $RESULTS.dfilt.q.d3.c80   #  140902
+
+
+
+## HIT
+$DF -d 5 -c .80 -t hit   $RESULTS > $RESULTS.dfilt.h.d5.c80
+$DF -d 4 -c .80 -t hit   $RESULTS > $RESULTS.dfilt.h.d4.c80
+$DF -d 3 -c .80 -t hit   $RESULTS > $RESULTS.dfilt.h.d3.c80
+
+## This step removes a massive number of alignments!
+wc -l $RESULTS                  # 5912272
+wc -l $RESULTS.dfilt.h.d5.c80   #  475517
+wc -l $RESULTS.dfilt.h.d4.c80   #   
+wc -l $RESULTS.dfilt.h.d3.c80   #  284182
+
+
+
+## BOTH 0
+$DF -d 5 -c .80 -t both  $RESULTS > $RESULTS.dfilt.b.d5.c80
+$DF -d 4 -c .80 -t both  $RESULTS > $RESULTS.dfilt.b.d4.c80
+$DF -d 3 -c .80 -t both  $RESULTS > $RESULTS.dfilt.b.d3.c80
+
+## This step removes a massive number of alignments!
+wc -l $RESULTS                  #  564581
+wc -l $RESULTS.dfilt.b.d5.c80   #   17974
+wc -l $RESULTS.dfilt.b.d4.c80   #   16785
+wc -l $RESULTS.dfilt.b.d3.c80   #   14948
+
+
+
+## BOTH 1
+
+## This method is better than the method below because...
+
+export RESULTS
+
+perl -e '
+  open I, "<", $ENV{"RESULTS"}. ".dfilt.h.d5.c80" or die;
+  while(<I>){$x{$_}++}
+
+  open O, "<", $ENV{"RESULTS"}. ".dfilt.q.d5.c80" or die;
+  while(<O>){print if $x{$_}}
+
+' > $RESULTS.dfilt.b1.d5.c80
+
+## This step removes a massive number of alignments!
+wc -l $RESULTS                  # 5912272
+wc -l $RESULTS.dfilt.b1.d5.c80  #  123897
+wc -l $RESULTS.dfilt.b1.d3.c80  #   92999
+
+
+
+## BOTH 2
+
+## Above we use settings such that query sequecnes (BES) with multiple
+## alignments to the target sequence are removed (or sub-alignments
+## thereof). However, Some 'unique' pieces of the genome attract many
+## query sequences. These artifacts are seen across BES, FES and 20kb
+## 454 PE alignments, and should therefore be removed.
+
+$DF -t hit   -d 5 -c .80 \
+  $RESULTS.dfilt.q.d5.c80 \
+> $RESULTS.dfilt.b.d5.c80
+
+## This step removes a substantial number of alignments
+wc -l $RESULTS.dfilt.b2.d5.c80  #  134891
+
+
+
+
+
+## Just make a GFF...
+
+./to_gff.plx --source 'dund dm' \
+  $RESULTS.dfilt.b.d3.c80 \
+> GFF/`basename $RESULTS`.dfilt.b.d3.c80.gff
+
+#bad ori, away   37
+#missing seq     13735
+#GOOD PAIR!      24517
+#too short       161
+#no align        73565
+#bad ori, para   62
+#too long        3
+#OK
+
+wc -l \
+  GFF/`basename $RESULTS`.dfilt.b.d3.c80.gff # 84202
+
+
+
+## Load it into GB?
+
+## See ../NOTES
+
+
+
+
+
+## NOTE! (out of date, doesn't include HIT repeat filter)
+
+From the 85,110 DM BACs, there are 170,220 BES (in theory). 
+
+We have sequences for 156,485 BES, i.e. 13,735 or 8% are 'missing'.
+
+Of these 156,485 BES:
+We have alignments for 153,361 BES, i.e. 3,124 or 2% fail to align.
+
+After filtering:
+We have alignments for 127,601 BES, i.e. 25,760 or 17% are rejected.
+
+
+The total drop off is 42,619 BES or 25% of the ideal 170,220.
+
+
+
+
+## NOTE! 
+
+Initially, I processed 'hits' from best to worst, allowing a 'bad
+pair' to be skipped over if a lower scoring 'good pair' could be
+found. In total, only 997 lower scoring 'good pairs' could be found
+after the best scoring 'bad pair'. This is just 3% of the 'good pairs'
+(997), and, because they considerable complicate processing, they are
+now simply discarded.
+
+
