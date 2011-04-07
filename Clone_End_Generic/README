@@ -1,0 +1,37 @@
+13:43  * dukeleto goes back to eating breakfast
+13:48  * rbuels leaves
+13:58 < dbolser> rbuels: aure here is the uglyness: 
+                 https://github.com/dbolser/PGSC/tree/master/Clone_End_Generic
+13:58 < dbolser> Elsewhere I wrote code to do something slightly different, but 
+                 made the processing generic enough to handle any mate pair 
+                 info (i.e. one script for all libraries)
+13:59 < dbolser> I did this using a bambus style 'mates' file, however, here I 
+                 use the 'header table' created from the fasta header of the 
+                 end sequences
+14:00 < dbolser> not 100% sure the mates file would work here, as when I use it 
+                 later, I rely on the mate pairs defined in the GFF created at 
+                 this stage.
+14:00 < dbolser> I may as well dump that code there too though...
+14:06 < dbolser> https://github.com/dbolser/PGSC/blob/master/Clone_End_Generic/Yet_More_Mayhem/map_pe_features.plx
+14:06 < dbolser> ugly
+14:06 < dbolser> have fun
+14:07 < dbolser> that latter script takes the mapped PE's on one or more 
+                 superscaffolds (related by an AGP) and then 're-pairs' them in 
+                 the resulting ultrascaffold
+14:07 < dbolser> although my pairing code is buggy ;-)
+14:07 < dbolser> (which is why I want to merge the two approaches, because my 
+                 pairing code is correct in the first approach)
+14:08 < dbolser> but the latter approach has some nifty length code stuff that 
+                 ties into my gbrowse config...
+14:08 < dbolser> so basically it's a months work to get it all working how I 
+                 want it ... the current code is a mess but it just about works.
+14:16  * dbolser points rbuels at 
+https://github.com/dbolser/PGSC/blob/master/Clone_End_Generic/Yet_More_Mayhem/AGP.pm
+14:22 < dbolser> aure: the three files to look at are: SL_BES-header2tab.plx, 
+                 SL_BES-NOTES, depth_filter.plx and SL_BES-to_gff.plx.
+14:23 < dbolser> those four files are what you need (along with SSAHA2 and the 
+                 SSAHA2 indexed tomato genome) to map all the tomato PEs.
+14:37 <@rbuels> dbolser: could you cut and paste this whole IRC log into a file 
+                and put it in there with them?
+14:37 <@rbuels> dbolser: you don't have to write real documentation, just this 
+                IRC log is fine. :-)
