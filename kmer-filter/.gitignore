@@ -1,0 +1,21 @@
+
+## Ignore junk files
+.Rhistory
+
+## The data files are too big to store in git
+Data
+
+## These are just 'project specific' simlinks to data directories
+
+Barley_Assembly
+Barley_Indexes
+Barley_Repeats
+Potato_Assembly
+Potato_Indexes
+Potato_Repeats
+Tomato_Assembly
+Tomato_Index
+Tomato_Repeat
+Wheat_Assembly
+Wheat_Indexes
+Wheat_Repeats
