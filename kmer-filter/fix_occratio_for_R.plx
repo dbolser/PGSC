@@ -2,6 +2,9 @@
 
 use strict;
 
+
+# -output unique nonunique nonuniquemulti total relative
+
 my %types =
   ("# distribution of unique mers"                                                   => 'uniq',
    "# distribution of non unique mers (counting each non unique mer only once)"      => 'nun1',
@@ -15,40 +18,39 @@ warn "there are ", scalar keys %types, " types\n";
 
 
 my %res;
-my ($mink, $maxk) = ( 1e9, -1 );
-
+#my ($mink, $maxk) = ( 1e9, -1 );
 
 my $type;
 
 while(<>){
   chomp;
   
-  if(/^#/){
-    $type = $types{$_} or die;
-    #warn "'$type'\n";
-    next;
+  if(/^# /){
+      if(/^# distribution of /){
+          $type = $types{$_} or die;
+          warn "'$type'\n";
+      }
+      next;
   }
   
   my ($k, $a, $b) = split(/\s/, $_);
   
   $a = "$a\t$b" if defined($b);
   
-  $mink = $k if $k < $mink;
-  $maxk = $k if $k > $maxk;
+  #$mink = $k if $k < $mink;
+  #$maxk = $k if $k > $maxk;
   
-  $res{$type}{$k} = $a;
+  $res{$k}{$type} = $a;
 }
 
 
-for my $k ( ($mink .. $maxk) ){
+for my $k ( sort keys %res ){
   print
     join("\t", $k,
-	 ( defined($res{'uniq'}) ? $res{'uniq'}{$k} : (0, 0) ),
-	 ( defined($res{'nun1'}) ? $res{'nun1'}{$k} : (0, 0) ),
-	 ( defined($res{'nunN'}) ? $res{'nunN'}{$k} : (0, 0) ),
-	 ( defined($res{'all1'}) ? $res{'all1'}{$k} :     0  ),
-	 ( defined($res{'allN'}) ? $res{'allN'}{$k} :     0  ),
+	 ( exists($res{$k}{'uniq'}) ? $res{$k}{'uniq'} : (0, 0) ),
+	 ( exists($res{$k}{'nun1'}) ? $res{$k}{'nun1'} : (0, 0) ),
+	 ( exists($res{$k}{'nunN'}) ? $res{$k}{'nunN'} : (0, 0) ),
+	 ( exists($res{$k}{'all1'}) ? $res{$k}{'all1'} :     0  ),
+	 ( exists($res{$k}{'allN'}) ? $res{$k}{'allN'} :     0  ),
 	), "\n";
 }
-
-
