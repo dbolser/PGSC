@@ -3,50 +3,65 @@
 use strict;
 use Getopt::Long;
 
-## Define some paramters
-my $k = 19;
-my $min_len_thresh = 50;
+## Define some default paramters (configurable on the cli)
 
-my $merge_thresh = $k * 2;
+## Size of the kmer we're using to mine repeats
+my $k;
 
-my $seq_file;
+## Minimum length to consider a region a repeat. Regions smaller than
+## this will be ignored. Set to k + 1 by default.
+my $minimum_len;
+
+## Maximum gap between two high 'kmer coverage' regions before they
+## are considered separate features
+my $maximum_gap;
+
+## Minimum 'kmer coverage' to consider repetative. This is safe to
+## leave at zero.
+my $minimum_cov = 0;
+
+## Sequence file (used to simply get sequene names). This is expected
+## to contain sequence names in fasta (header) format.
+my $seq_file = '';
 
 
 
-## See code to understand
-die "some repeats will be missed\n"
-    if $min_len_thresh < $k;
-
-
-
-## Get options
 GetOptions
   (
-   "k=i"    => \$k,
-   "min=i"  => \$min_len_thresh,
-   "file|seq=s" => \$seq_file,
+   "k=i" => \$k,
+   "min=i" => \$minimum_len,
+   "gap=i" => \$maximum_gap,
+   "cov=i" => \$minimum_cov,
+   "seq-file=s" => \$seq_file,
   )
   or die "failed to parse command line\n";
 
-die "pass a sequence file\n"
-  unless -s $seq_file;
+
+
+my @seq_names =
+    seq_names_from_file ( $seq_file );
+
+die "pass a (non-empty) sequence (header) file to extract sequence names\n"
+    unless @seq_names;
 
 
 
-## Read in sequence names
-warn "reading in sequence names from $seq_file\n";
-my @seq_names;
+## Define some sensible defaults for the above parameters, if not
+## given on the cli
 
-open NAMES, '<', $seq_file
-  or die "failed to open $seq_file\n";
+## This should match what was run by tallymer (and is usually reported
+## in the header of the tmer file)
+$k = 21
+  unless defined $k;
 
-while(<NAMES>){
-  next unless /^>/; chomp;
-  push @seq_names, substr($_, 1);
-}
+$minimum_len = $k
+  unless defined $minimum_len;
 
-warn "read ", scalar(@seq_names), "\n";
-warn "OK\n";
+## Changing this from $k + 1 to $k * 3 reduced the number of repeat
+## features by a factor of about 15 but only increased the number of
+## masked bases by about 5%, which seemed to be a good tradeoff...
+$maximum_gap = $k * 3
+  unless defined $maximum_gap;
 
 
 
@@ -54,78 +69,133 @@ warn "OK\n";
 
 ## Parse the output of the tallymer search
 
-my ($p_seq, $p_pos, $len, $depth) = (-1, -1, -1);
+my $r_len = -1; # Rolling length
+my $r_cov = -1; # Rolling coverage
+
+my $p_seq = -1; # Previous seq id
+my $p_pos = -1; # Previous position
 
 while(<>){
-  # ignore commets
-  next if /^#/;
+  # ignore comments and empty lines
+  next if /^#/; next if /^$/;
   
   chomp;
-  my ($seq, $pos, $x, undef) = split;
+  my ($seq, $pos, $cov) = split;
   
+  ## By default, we trust the 'minocc' coverage, however, we can go
+  ## larger here (makes me why bother setting minocc)...
+  next if $cov < $minimum_cov;
+
   ## are we beginning a new sequence?
   if($seq != $p_seq){
-    #warn $seq, "\n";
     
-    # we should dump the current region
-    &print_region( $p_seq, $p_pos, $len, $depth / $len )
-      if $len >= $min_len_thresh;
+    ## we should dump the previous region (unless we just began...)
+    &print_region( $p_seq, $p_pos, $r_len, $r_cov, $k, $minimum_len )
+        if $p_seq > -1;
     
-    # and reset our counters
-    $len = 0;
-    $depth = 0;
-    $p_pos = $pos;
+    ## and reset our counters
+    $r_len = 0;
+    $r_cov = $cov;
     $p_seq = $seq;
+    $p_pos = $pos;
     next;
   }
   
   ## if not, are we continuing a region?
-  if($pos - $p_pos <= $merge_thresh){
-    $len += $pos - $p_pos;
-    $depth += $x;
-    $p_pos = $pos;
+  if( $maximum_gap > $pos - $p_pos - $k - 1 ){
+    $r_len += $pos - $p_pos;
+    $r_cov += $cov;
+    $p_pos  = $pos;
     next;
   }
   
   ## if not, we must be leaving a region...
   
-  # we should dump the current region
-  &print_region( $seq, $p_pos, $len, $depth / $len )
-    if $len >= $min_len_thresh;
+  ## we should dump the previous region
+  &print_region( $p_seq, $p_pos, $r_len, $r_cov, $k, $minimum_len );
   
-  # and reset our counters
-  $len = 0;
-  $depth = 0;
+  ## and reset our counters
+  $r_len = 0;
+  $r_cov = $cov;
   $p_pos = $pos;
 }
+
+
+
+## And finally...
+my ($num_repeats, $num_bases) =
+    &print_region( $p_seq, $p_pos, $r_len, $r_cov, $k, $minimum_len );
+
+warn "found ", $num_repeats || 0, " repeats ".
+  "covering ", $num_bases || 0, " bases\n";
 
 warn "OK\n";
 
 
 
+
+
+sub seq_names_from_file {
+    my $seq_file = shift;
+    my @seq_names;
+
+    warn "reading sequence names from seq-file '$seq_file'\n";
+
+    open NAMES, '<', $seq_file
+        or warn "failed to open file '$seq_file'\n";
+
+    while(<NAMES>){
+        next unless /^>/;
+        chomp;
+        push @seq_names, substr($_, 1);
+    }
+
+    warn "read ", scalar(@seq_names), " sequence names\n";
+
+    return @seq_names;
+}
+
+
+
+
+
 sub print_region () {
-  $p_seq = shift;
-  $p_pos = shift;
-  $len   = shift;
-  $depth = shift;
-  
-  our $j;
-  
+  my $seq = shift;
+  my $pos = shift;
+  my $len = shift;
+  my $cov = shift;
+
+  my $k = shift;
+  my $minimum_length = shift;
+
+  our $num_repeats;
+  our $num_bases;
+
+  return ($num_repeats, $num_bases)
+      if $len + $k < $minimum_len;
+
+  ## This is just the first thing I could think of, it's the average
+  ## kmer coverage across the repeat region
+  my $score = $cov / ($len || 1);
+
   print
     join("\t",
 	 $seq_names[$p_seq],
 	 'tallymer',
 	 'repeat_region',
-	 $p_pos - $len,
-	 $p_pos + $k,
-	 sprintf("%d", $depth),
+	 $pos + 1 - $len,
+	 $pos + $k,
+	 sprintf("%d", $score),
 	 '+',
 	 '.',
 	 join(';',
-	      'ID='. sprintf("%08d", $j++),
-	      'dbxref=SO:0000657'
+	      'ID='. sprintf("%08d", $num_repeats++),
+	      'dbxref=SO:0000657',
+              "length=". ($len + $k),
 	     ),
 	), "\n";
-  
-  return 1;
+
+  $num_bases += $len + $k;
+
+  return ($num_repeats, $num_bases);
 }

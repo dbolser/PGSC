@@ -1,0 +1,41 @@
+# mersize = 5
+
+0       +1      10
+0       +3      20
+
+# By default (with k=5) this should give one repeat starting at
+# position 2 (tmer reports zero-based positions) and ending at
+# position 8:
+
+#  b0    012345678
+#  b1    123456789
+#  k1     |--->
+#  k2       |--->
+#  range  |-----|
+
+# If we set cov to 11, it will ignore k1, and should report one repeat
+# for k2 starting at position 4, ending at position 8.
+
+
+# Here is some more of the same, just to bring home the point:
+
+1       +1000       5
+1       +1001      10
+
+
+# Stretch the default gap (k*3 = 15)...
+
+## These two are merged (but separate at gap = 14 and below)
+1       +3000       5
+1       +3020      10
+
+## These two are separate (but merged at gap = 16 and above)
+1       +4000       2
+1       +4021       2
+
+## These two can never separate, even at gap = 0
+1       +5000       5
+1       +5005      10
+
+## All three merge at gap = 1000 (unless --cov = 5)
+## All four  merge at gap = 2000
