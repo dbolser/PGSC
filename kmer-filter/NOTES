@@ -1,0 +1,685 @@
+
+source local-lib.sh
+
+## WHEAT vs. Assembly
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10.cov > \
+    wheat.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.cov > \
+    wheat.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05.cov > \
+    wheat.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.cov > \
+    wheat.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.cov > \
+    wheat.21.99-gap1.ola &
+
+
+
+## BARLEY vs. Assembly
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10.cov > \
+    barley.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.cov > \
+    barley.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05.cov > \
+    barley.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.cov > \
+    barley.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.cov > \
+    barley.21.99-gap1.ola &
+
+
+
+## WHEAT vs. Exons
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10.cov > \
+    wheat_exon.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.cov > \
+    wheat_exon.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05.cov > \
+    wheat_exon.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.cov > \
+    wheat_exon.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.cov > \
+    wheat_exon.21.99-gap1.ola &
+
+
+
+## BARLEY vs. Exons
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10.cov > \
+    barley_exon.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.cov > \
+    barley_exon.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05.cov > \
+    barley_exon.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.cov > \
+    barley_exon.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.cov > \
+    barley_exon.21.99-gap1.ola &
+
+
+
+
+
+## TOTO
+
+cat Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.triticum_aestivum_core_38_91_4 > \
+    Repeatybomps/wheat_total.21.10.cov
+
+cat Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.triticum_aestivum_core_38_91_4 > \
+    Repeatybomps/wheat_total.21.10-gap1.cov
+
+cat Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.triticum_aestivum_core_38_91_4 > \
+    Repeatybomps/wheat_total.21.05.cov
+
+cat Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.triticum_aestivum_core_38_91_4 > \
+    Repeatybomps/wheat_total.21.05-gap1.cov
+
+cat Wheat_Repeats/161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.triticum_aestivum_core_38_91_4 > \
+    Repeatybomps/wheat_total.21.99-gap1.cov
+
+
+
+cat Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.hordeum_vulgare_core_38_91_3 > \
+    Repeatybomps/barley_total.21.10.cov
+
+cat Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.hordeum_vulgare_core_38_91_3 > \
+    Repeatybomps/barley_total.21.10-gap1.cov
+
+cat Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.hordeum_vulgare_core_38_91_3 > \
+    Repeatybomps/barley_total.21.05.cov
+
+cat Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.hordeum_vulgare_core_38_91_3 > \
+    Repeatybomps/barley_total.21.05-gap1.cov
+
+cat Barley_Repeats/Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.cov \
+    Repeatybomps/repeatmask_redat_repbase_dust.hordeum_vulgare_core_38_91_3 > \
+    Repeatybomps/barley_total.21.99-gap1.cov
+
+
+
+
+
+## WHEAT TOTO vs. Assembly
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.10.cov > \
+    wheat_total.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.10-gap1.cov > \
+    wheat_total.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.05.cov > \
+    wheat_total.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.05-gap1.cov > \
+    wheat_total.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.99-gap1.cov > \
+    wheat_total.21.99-gap1.ola &
+
+
+
+## BARLEY TOTO vs. Assembly
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.10.cov > \
+    barley_total.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.10-gap1.cov > \
+    barley_total.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.05.cov > \
+    barley_total.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.05-gap1.cov > \
+    barley_total.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/assembly.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.99-gap1.cov > \
+    barley_total.21.99-gap1.ola &
+
+
+
+## WHEAT TOTO vs. Exons
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.10.cov > \
+    wheat_exon_total.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.10-gap1.cov > \
+    wheat_exon_total.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.05.cov > \
+    wheat_exon_total.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.05-gap1.cov > \
+    wheat_exon_total.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.triticum_aestivum_core_38_91_4 \
+    Repeatybomps/wheat_total.21.99-gap1.cov > \
+    wheat_exon_total.21.99-gap1.ola &
+
+
+
+## BARLEY TOTO vs. Exons
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.10.cov > \
+    barley_exon_total.21.10.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.10-gap1.cov > \
+    barley_exon_total.21.10-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.05.cov > \
+    barley_exon_total.21.05.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.05-gap1.cov > \
+    barley_exon_total.21.05-gap1.ola &
+
+./coverage/simple_coverage.plx \
+    Repeatybomps/exon.hordeum_vulgare_core_38_91_3 \
+    Repeatybomps/barley_total.21.99-gap1.cov > \
+    barley_exon_total.21.99-gap1.ola &
+
+
+
+
+
+
+
+
+## LOADING READY FOR WGA...
+
+INSERT INTO analysis (created, logic_name, program, parameters, gff_source, gff_feature)
+VALUES (NOW(), 'tallymer', 'TallymerToRepeats', '-k 21 --cov 5 --gap 1', 'tallymer', 'repeat_region');
+
+INSERT INTO analysis (created, logic_name, program, parameters, gff_source, gff_feature)
+VALUES (NOW(), 'tallymer', 'TallymerToRepeats', '-k 21 --cov 10 --gap 1', 'tallymer', 'repeat_region');
+
+INSERT INTO analysis (created, logic_name, program, parameters, gff_source, gff_feature)
+VALUES (NOW(), 'tallymer', 'TallymerToRepeats', '-k 21 --cov 99 --gap 1', 'tallymer', 'repeat_region');
+
+INSERT INTO analysis (created, logic_name, program, parameters, gff_source, gff_feature)
+VALUES (NOW(), 'tallymer', 'TallymerToRepeats', '-k 21 --cov 50 --gap 1', 'tallymer', 'repeat_region');
+
+INSERT INTO analysis (created, logic_name, program, parameters, gff_source, gff_feature)
+VALUES (NOW(), 'tallymer', 'TallymerToRepeats', '-k 21 --cov 250 --gap 1', 'tallymer', 'repeat_region');
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ hordeum_vulgare_core_37_90_3
+SELECT * FROM analysis WHERE logic_name RLIKE 'tallymer';
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters            | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
+|          67 | 2018-01-18 12:00:00 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 5 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters             | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+|          68 | 2018-01-19 12:46:17 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 10 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters             | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+|          69 | 2018-01-20 20:59:45 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 99 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ triticum_aestivum_core_37_90_4
+SELECT * FROM analysis WHERE logic_name RLIKE 'tallymer';
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters            | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
+|           5 | 2018-01-18 12:10:33 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 5 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+-----------------------+--------+----------------+------------+---------------+
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters             | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+|         101 | 2018-01-19 12:48:52 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 10 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+| analysis_id | created             | logic_name | db   | db_version | db_file | program           | program_version | program_file | parameters             | module | module_version | gff_source | gff_feature   |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+|         102 | 2018-01-20 21:05:00 | tallymer   | NULL | NULL       | NULL    | TallymerToRepeats | NULL            | NULL         | -k 21 --cov 99 --gap 1 | NULL   | NULL           | tallymer   | repeat_region |
++-------------+---------------------+------------+------+------------+---------+-------------------+-----------------+--------------+------------------------+--------+----------------+------------+---------------+
+
+
+
+INSERT INTO repeat_consensus (repeat_name, repeat_class, repeat_type, repeat_consensus)
+VALUES ('tallymer', 'tallymer', 'Tallymer', 'N');
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ hordeum_vulgare_core_37_90_3
+SELECT * FROM repeat_consensus WHERE repeat_name = 'tallymer';
++---------------------+-------------+--------------+-------------+------------------+
+| repeat_consensus_id | repeat_name | repeat_class | repeat_type | repeat_consensus |
++---------------------+-------------+--------------+-------------+------------------+
+|              880301 | tallymer    | tallymer     | Tallymer    | N                |
++---------------------+-------------+--------------+-------------+------------------+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ triticum_aestivum_core_37_90_4
+> SELECT * FROM repeat_consensus WHERE repeat_name = 'tallymer';
++---------------------+-------------+--------------+-------------+------------------+
+| repeat_consensus_id | repeat_name | repeat_class | repeat_type | repeat_consensus |
++---------------------+-------------+--------------+-------------+------------------+
+|             2339260 | tallymer    | tallymer     | Tallymer    | N                |
++---------------------+-------------+--------------+-------------+------------------+
+
+
+time \
+perl -e '
+  %n2id = (
+      'chr1H' => 410815,
+      'chr2H' => 410816,
+      'chr3H' => 410817,
+      'chrUn' => 410818,
+      'chr6H' => 410819,
+      'chr7H' => 410820,
+      'chr4H' => 410821,
+      'chr5H' => 410822,
+      'Pt'    => 469938,
+  );
+  while(<>){
+    @F=split/\t/;
+    print join("\t",
+      $n2id{$F[0]},
+      $F[3], $F[4], 0,
+      1, $F[4] - $F[3] + 1, 880301, 70, $F[5]
+    ), "\n";
+  }
+' Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.250-gap1.gff > \
+  Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.250-gap1.tab
+
+# ' Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.gff > \
+#   Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab
+
+# ' Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.gff > \
+#   Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.tab
+
+# ' Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.gff > \
+#   Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.tab
+
+wc -l \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.gff \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab
+#  21707781 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.gff
+#  21707781 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab
+
+wc -l \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.gff \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.tab
+#  18145620 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.gff
+#  18145620 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.tab
+
+wc -l \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.gff \
+    Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.tab
+#  16774855 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.gff
+#  16774855 Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.tab
+
+
+
+perl -e '
+  %n2id = (
+    'chr1A' =>  1,
+    'chr1B' =>  2,
+    'chr1D' =>  3,
+    'chr2A' =>  4,
+    'chr2B' =>  5,
+    'chr2D' =>  6,
+    'chr3A' =>  7,
+    'chr3B' =>  8,
+    'chr3D' =>  9,
+    'chr4A' => 10,
+    'chr4B' => 11,
+    'chr4D' => 12,
+    'chr5A' => 13,
+    'chr5B' => 14,
+    'chr5D' => 15,
+    'chr6A' => 16,
+    'chr6B' => 17,
+    'chr6D' => 18,
+    'chr7A' => 19,
+    'chr7B' => 20,
+    'chr7D' => 21,
+    'chrUn' => 22,
+  );
+  while(<>){
+    @F=split/\t/;
+    print join("\t",
+      $n2id{$F[0]},
+      $F[3], $F[4], 0,
+      1, $F[4] - $F[3] + 1, 2339260, 103, $F[5]
+    ), "\n";
+  }
+' 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.250-gap1.gff > \
+  161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.250-gap1.tab
+
+# ' 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.gff > \
+#   161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab
+
+# ' 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.gff > \
+#   161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.tab
+
+# ' 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.gff > \
+#   161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.tab
+  
+wc -l \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.gff \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab
+#  71794855 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.gff
+#  71794855 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab
+
+wc -l \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.gff \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.tab
+#  46964350 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.gff
+#  46964350 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.tab
+
+wc -l \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.gff \
+    161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.tab
+#  41052163 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.gff
+#  41052163 161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.tab
+
+
+
+
+
+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ hordeum_vulgare_core_37_90_3
+LOAD DATA LOCAL INFILE
+  #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.tab"
+  #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.tab"
+  #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab"
+  "Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.250-gap1.tab"
+INTO TABLE
+  repeat_feature
+    (seq_region_id, seq_region_start, seq_region_end, seq_region_strand, repeat_start, repeat_end, repeat_consensus_id, analysis_id, score)
+;
+# Query OK, 22012044 rows affected (14 min 34.69 sec)
+# Records:  22012044  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 21707781 rows affected (1 hour 44 min 0.51 sec)
+# Records:  21707781  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 18145620 rows affected (1 hour 13 min 55.10 sec)
+# Query OK, 18145620 rows affected (8 min 36.96 sec)
+# Records:  18145620  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 16774855 rows affected (52 min 53.24 sec)
+# Query OK, 16774855 rows affected (10 min 18.72 sec)
+# Records:  16774855  Deleted: 0  Skipped: 0  Warnings: 0
+
+
+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ triticum_aestivum_core_37_90_4
+LOAD DATA LOCAL INFILE
+  #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.tab"
+  #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.tab"
+  #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab"
+  "161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.250-gap1.tab"
+INTO TABLE
+  repeat_feature
+    (seq_region_id, seq_region_start, seq_region_end, seq_region_strand, repeat_start, repeat_end, repeat_consensus_id, analysis_id, score)
+;
+# Query OK, 80110278 rows affected (3 hours 45 min 59.67 sec)
+# Records:  80110278  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 71794855 rows affected (3 hours 16 min 45.42 sec)
+# Records:  71794855  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 46964350 rows affected (2 hours 45 min 36.75 sec)
+# Query OK, 46964350 rows affected (10 min 13.77 sec)
+# Records:  46964350  Deleted: 0  Skipped: 0  Warnings: 0
+
+# Query OK, 41052163 rows affected (42 min 46.94 sec)
+# Query OK, 41052163 rows affected (35 min 24.54 sec)
+# Records:  41052163  Deleted: 0  Skipped: 0  Warnings: 0
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM meta WHERE meta_key = 'repeat.analysis' ORDER BY meta_value;
+
+SELECT logic_name, analysis_id, COUNT(*) FROM analysis
+INNER JOIN repeat_feature USING (analysis_id) GROUP BY 2 ORDER BY 1;
+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ hordeum_vulgare_core_37_90_3
+
++---------+------------+-----------------+--------------------+
+| meta_id | species_id | meta_key        | meta_value         | OK
++---------+------------+-----------------+--------------------+
+|     326 |          1 | repeat.analysis | dust               |
+|     381 |          1 | repeat.analysis | repeatmask_redat   |
+|     328 |          1 | repeat.analysis | repeatmask_repbase |
+|     382 |          1 | repeat.analysis | tallymer           |
++---------+------------+-----------------+--------------------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) | A
++--------------------+-------------+----------+
+| dust               |           8 |  4476216 |
+| trf                |           9 |  1993239 |
+| repeatmask_redat   |          11 |  2570105 |
+| repeatmask_repbase |          10 |  2649829 |
+| tallymer_21_05_01  |          67 | 16774855 | <- cov 05
+| tallymer           |          68 | 18145620 | <- cov 10?
++--------------------+-------------+----------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) | B
++--------------------+-------------+----------+
+| dust               |           8 |  4476216 |
+| trf                |           9 |  1993239 |
+| repeatmask_redat   |          11 |  2570105 |
+| repeatmask_repbase |          10 |  2649829 |
+| tallymer           |          67 | 16774855 | <- cov 05
++--------------------+-------------+----------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) | C
++--------------------+-------------+----------+
+| dust               |           8 |  4476216 |
+| trf                |           9 |  1993239 |
+| repeatmask_redat   |          11 |  2570105 |
+| repeatmask_repbase |          10 |  2649829 |
+| tallymer           |          69 | 21707781 | <- cov 99
++--------------------+-------------+----------+
+
+
+ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ triticum_aestivum_core_37_90_4
+
++---------+------------+-----------------+--------------------+
+| meta_id | species_id | meta_key        | meta_value         |
++---------+------------+-----------------+--------------------+
+|       7 |          1 | repeat.analysis | dust               |
+|       9 |          1 | repeat.analysis | repeatmask_redat1  |
+|     255 |          1 | repeat.analysis | repeatmask_repbase |
+|     256 |          1 | repeat.analysis | tallymer           |
++---------+------------+-----------------+--------------------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) | A
++--------------------+-------------+----------+
+| dust               |           1 | 11885427 |
+| trf                |           2 |  5456615 |
+| repeatmask_redat1  |           4 |  6398165 |
+| repeatmask_repbase |           3 |  5881638 |
+| tallymer_21_05_01  |           5 | 41052163 | <- cov 05
+| tallymer           |         101 | 46964350 | <- cov 10?
++--------------------+-------------+----------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) |
++--------------------+-------------+----------+
+| dust               |           1 | 11885427 | B
+| trf                |           2 |  5456615 |
+| repeatmask_redat1  |           4 |  6398165 |
+| repeatmask_repbase |           3 |  5881638 |
+| tallymer           |           5 | 41052163 | <- cov 05
++--------------------+-------------+----------+
+
++--------------------+-------------+----------+
+| logic_name         | analysis_id | COUNT(*) | C
++--------------------+-------------+----------+
+| dust               |           1 | 11885427 |
+| trf                |           2 |  5456615 |
+| repeatmask_redat1  |           4 |  6398165 |
+| repeatmask_repbase |           3 |  5881638 |
+| tallymer           |         102 | 71794855 | <- cov 99
++--------------------+-------------+----------+
+
+
+
+
+DELETE FROM meta WHERE meta_id IN (327, 329);
+DELETE FROM meta WHERE meta_id IN (8, 10, 96);
+
+INSERT INTO meta (species_id, meta_key, meta_value)
+VALUES (1, 'repeat.analysis', 'tallymer');
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Oh fuck me...
+
+DROP             TABLE IF EXISTS true_pair_aligner_jobs;
+CREATE TEMPORARY TABLE           true_pair_aligner_jobs(
+  PRIMARY KEY (db_dnafrag_chunk_set_id,
+               qy_dnafrag_chunk_set_id)
+) AS
+SELECT
+  db.dnafrag_chunk_set_id AS db_dnafrag_chunk_set_id, db.dnafrag_id AS db_dnafrag_id, db.seq_start AS db_seq_start, db.seq_end AS db_seq_end,
+  qy.dnafrag_chunk_set_id AS qy_dnafrag_chunk_set_id, qy.dnafrag_id AS qy_dnafrag_id, qy.seq_start AS qy_seq_start, qy.seq_end AS qy_seq_end
+FROM
+  (dnafrag_chunk db INNER JOIN dnafrag_chunk_set dbcs ON db.dnafrag_chunk_set_id = dbcs.dnafrag_chunk_set_id AND dbcs.dna_collection_id = 1)
+INNER JOIN
+  (dnafrag_chunk qy INNER JOIN dnafrag_chunk_set qycs ON qy.dnafrag_chunk_set_id = qycs.dnafrag_chunk_set_id AND qycs.dna_collection_id = 2)
+ON 1;
+
+
+
+DROP             TABLE IF EXISTS pair_aligner_jobs;
+CREATE TEMPORARY TABLE           pair_aligner_jobs(
+  PRIMARY KEY (db_dnafrag_chunk_set_id,
+               qy_dnafrag_chunk_set_id)
+) AS
+SELECT
+  MID(input_id, INSTR(input_id, "dbChunkSetID")+17, INSTR(input_id, ',')-20) AS db_dnafrag_chunk_set_id,
+  REPLACE(MID(input_id, INSTR(input_id, "qyChunkSetID")+17), '}', '')        AS qy_dnafrag_chunk_set_id
+FROM
+  job
+WHERE
+  analysis_id = 8
+;
+
+ALTER TABLE pair_aligner_jobs CHANGE db_dnafrag_chunk_set_id db_dnafrag_chunk_set_id INT NOT NULL;
+ALTER TABLE pair_aligner_jobs CHANGE qy_dnafrag_chunk_set_id qy_dnafrag_chunk_set_id INT NOT NULL;
