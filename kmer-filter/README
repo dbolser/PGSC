@@ -1,86 +1,77 @@
-## PICK THE ASSEMBLY TO FILTER
 
-## POTATO
-FAS_DIR=Potato_Assembly/PGSC0003DM
-FAS=PGSC0003DMS
-FAS=PGSC0003DMB
+## 0) PICK YOUR TOOL
+
+GT=/nfs/panda/ensemblgenomes/external/genometools/bin/gt
+
+
+
+
+
+## 1) PICK THE ASSEMBLY TO FILTER
+
+## WHEAT
+FAS_DIR=Wheat_Assembly
+FAS=161010_Chinese_Spring_v1.0_pseudomolecules
+FAP=fasta
 
 # INDEX OUT DIR
-IDX_DIR=Potato_Indexes
+IDX_DIR=Wheat_Indexes
 
 # REPEAT OUT DIR
-RPT_DIR=Potato_Repeats
+RPT_DIR=Wheat_Repeats
 
 
 
-## OR
+## BARLEY
+FAS_DIR=Barley_Assembly
+FAS=Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel
+FAP=fa
 
-# ## TOMATO
-# FAS_DIR=Tomato_Assembly
-# FAS=S_lycopersicum_contigs.2.10
+# INDEX OUT DIR
+IDX_DIR=Barley_Indexes
 
-# # INDEX OUT DIR
-# IDX_DIR=Tomato_Indexes
-
-# # REPEAT OUT DIR
-# RPT_DIR=Tomato_Repeats
-
+# REPEAT OUT DIR
+RPT_DIR=Barley_Repeats
 
 
 
-
-## PICK YOUR TOOL
-
-GT=/sw/bin/gt
-GT=/homes/dbolser/build/GT/bin/gt
+## TEST
+ll $FAS_DIR/$FAS.$FAP
+ll $IDX_DIR
+ll $RPT_DIR
 
 
 
 
 
-## First, we create the enhanced suffix array. We invoke gt
+## 1) First, we create the enhanced suffix array. We invoke gt
 ## suffixerator with options -tis, -suf, -lcp, -des, -ssp and -sds
 ## since LTRharvest needs the corresponding tables. Furthermore, we
 ## specify -dna, as we process DNA-sequences.
 
-## No need to do this if we have already run it and we are just
-## changing parameters below!
+## NB: No need to repeat this if we have already run it and we are
+## just changing parameters below!
 
+time \
 $GT suffixerator -v \
   -tis -suf -lcp -des -ssp -sds -dna \
-  -db $FAS_DIR/$FAS.fa \
+  -db $FAS_DIR/$FAS.$FAP \
   -indexname $IDX_DIR/$FAS
 
-# md5sum $IDX_DIR/$FAS.{al1,des,sds,esq,ssp,suf,prj,lcp,llv}
-
-# f4d45f5788505ccfc21f8fd020bcb2a9  Potato_Indexes/PGSC0003DMS.al1
-# 8798db2e155d69b072c98a5cb8ddcb55  Potato_Indexes/PGSC0003DMS.des
-# 11977e2c5bfe1568532559303919d868  Potato_Indexes/PGSC0003DMS.sds
-# 141f11f00b937f454a09bb2abfc63021  Potato_Indexes/PGSC0003DMS.esq
-# eac4bc435f6d4f9ae1e4d838cf1f86af  Potato_Indexes/PGSC0003DMS.ssp
-# 40e4c2c6f1d93e0e910749616d5c0c05  Potato_Indexes/PGSC0003DMS.suf
-# b463f0eed888d06875ee975e74452069  Potato_Indexes/PGSC0003DMS.prj
-# 5a7532777f780a3d998996fd7f3e2ce5  Potato_Indexes/PGSC0003DMS.lcp
-# 193e414cee7549d01103ddc2049c90eb  Potato_Indexes/PGSC0003DMS.llv
-
-# f4d45f5788505ccfc21f8fd020bcb2a9  Potato_Indexes/PGSC0003DMB.al1
-# acc491970385202596c4c7bc24c6a62b  Potato_Indexes/PGSC0003DMB.des
-# cfe166be29c6b6f3c25820b3491f94dd  Potato_Indexes/PGSC0003DMB.sds
-# 41de029d54eb984511d027be76200095  Potato_Indexes/PGSC0003DMB.esq
-# 7dd461db2fd60ba67ab0692ab44fb161  Potato_Indexes/PGSC0003DMB.ssp
-# 662ddda9bead56bfb1c084d352641db9  Potato_Indexes/PGSC0003DMB.suf
-# 80a49f9f75d34120a295aea970f18530  Potato_Indexes/PGSC0003DMB.prj
-# ae6a2a3125d1746b3d6607b3ec41593c  Potato_Indexes/PGSC0003DMB.lcp
-# ecd5a591b4bcaa9fda69401f1dcc4ea5  Potato_Indexes/PGSC0003DMB.llv
+md5sum $IDX_DIR/$FAS.{al1,des,sds,esq,ssp,suf,prj,lcp,llv}
 
 
 
 
 
-## Next we have a look at some kmer distributions using occratio. No
-## need to repeat this if it's been done already and a decision made
-## below.
+## 2) Next we have a look at some kmer distributions using
+## occratio. Note, this doesn't show the kmer frequency histogram, but
+## just more general kmer counts against k.
 
+## NB: No need to repeat this if we have already run it and a decision
+## has been made below.
+
+time \
 $GT tallymer occratio -v \
   -minmersize 10 \
   -maxmersize 45 \
@@ -88,31 +79,34 @@ $GT tallymer occratio -v \
   -esa $IDX_DIR/$FAS \
 > Data/$FAS.occratio.10.45.dump
 
-# md5sum Data/$FAS.occratio*
-# 558a76781a3971bf2598afcff6713a9b  Data/PGSC0003DMS.occratio.10.45.dump
-# 9794e634385b33bc54316277eed925d6  Data/PGSC0003DMS.occratio.10.45.fix
-
-# 5a5623c0dde75bc266a73592f12e71c5  Data/PGSC0003DMB.occratio.10.45.dump
-# b92cd84f1d7c936ca76e49199b147ded  Data/PGSC0003DMB.occratio.10.45.fix
+md5sum Data/$FAS.occratio*
 
 
+## Bah
+./fix_occratio_for_R.plx \
+    Data/$FAS.occratio.10.45.dump > \
+    Data/$FAS.occratio.10.45.fix
 
 
+
+
+## 3) After making a decision about what kmer size and occurance we
+## want to filter based on the above, we need to build a specific
+## index for those choices.
 
 ## Lets pick 19-mers to build an index for searching against?
+## Lets pick 21-mers to build an index for searching against?
 ## Lets pick 41-mers to build an index for searching against?
 
-MER=19
+#MER=19
+MER=21
 #MER=41
 
 ## Only care about kmers more frequent than this number in our index.
+MIN=10
+MIN=05
 
-MIN=50
-
-
-
-
-
+time \
 $GT tallymer mkindex -v \
   -mersize $MER \
   -minocc $MIN \
@@ -120,30 +114,14 @@ $GT tallymer mkindex -v \
   -counts -pl \
   -indexname $IDX_DIR/$FAS.idx.$MER.$MIN
 
-# md5sum $IDX_DIR/$FAS.idx.19.50.{mer,mct,mbd}
-# be38cd7e058581b10b90835d170884d9  Potato_Indexes/PGSC0003DMS.idx.19.50.mer
-# 7f317cb50bbdc58ab43e1e8ae58c4237  Potato_Indexes/PGSC0003DMS.idx.19.50.mct
-# 88f95876da8106eafc414ccd971f3027  Potato_Indexes/PGSC0003DMS.idx.19.50.mbd
-
-# 4dae154f1867a9c872ee76a8d69cff38  Potato_Indexes/PGSC0003DMB.idx.19.50.mer
-# e638925f3da125f86eb9611bb29f17ae  Potato_Indexes/PGSC0003DMB.idx.19.50.mct
-# 5683d8960a8d8b47b4f989c605c84482  Potato_Indexes/PGSC0003DMB.idx.19.50.mbd
-
-# md5sum $IDX_DIR/$FAS.idx.41.50.{mer,mct,mbd}
-# 94579195ec54de608b041d2861077ff2  Potato_Indexes/PGSC0003DMS.idx.41.50.mer
-# 9989c1ec2b301813689c0d3730ab71be  Potato_Indexes/PGSC0003DMS.idx.41.50.mct
-# a97c28d2e43cba44572a4f8fbe95b531  Potato_Indexes/PGSC0003DMS.idx.41.50.mbd
-
-# 4cf6a8d8359e5afe2a67eec901119b21  Potato_Indexes/PGSC0003DMB.idx.41.50.mer
-# 467f0ab30c84597267ce32af62b57638  Potato_Indexes/PGSC0003DMB.idx.41.50.mct
-# 20c2cfdd67794c49bc3871696f48b57b  Potato_Indexes/PGSC0003DMB.idx.41.50.mbd
+md5sum $IDX_DIR/$FAS.idx.$MER.$MIN.{mer,mct,mbd}
 
 
 
 
 
-## Finally we search a sequence against the index, with the idea of
-## identifying repeats in the sequence.
+## 4) Finally we search a sequence against this index, with the idea
+## of identifying repeats in the sequence.
 
 # ## Testing...
 
@@ -161,94 +139,89 @@ $GT tallymer mkindex -v \
 
 
 
-
-
-## OK
-
+#echo \
+time \
 $GT tallymer search -v \
   -output qseqnum qpos counts  \
   -tyr $IDX_DIR/$FAS.idx.$MER.$MIN \
-  -q $FAS_DIR/$FAS.fa \
+  -q $FAS_DIR/$FAS.$FAP \
    > $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer
 
-# md5sum $RPT_DIR/$FAS.rpt.19.50.tmer
-# 09c5eeeb3924a372222faa7e69587a93  Potato_Repeats/PGSC0003DMS.rpt.19.50.tmer
-# 84ded64f990be7b5d8d43fb041e2790c  Potato_Repeats/PGSC0003DMB.rpt.19.50.tmer
-
-# md5sum $RPT_DIR/$FAS.rpt.41.50.tmer
-# 6360c9dc515b9ff481c0dd200cdb1327  Potato_Repeats/PGSC0003DMS.rpt.41.50.tmer
-# 3c35950128d81378a5b65a757972b1b4  Potato_Repeats/PGSC0003DMB.rpt.41.50.tmer
+md5sum $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer
 
 
 
 
 
-## Now we just need a script to process the tmer results into a GFF
-## format file
+## 5) Now we just need a script to process the tmer results into a GFF
+## format file.
 
+## Note that this script merges overlapping kmers and 'nearly
+## overlapping' kmers to call repetative regions (greater than a
+## certain minuimum size).
+
+time \
 ./tallymer2gff3.plx -k $MER \
-  -s $FAS_DIR/$FAS.fa \
+  -s $FAS_DIR/$FAS.$FAP \
      $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer \
    > $RPT_DIR/$FAS.rpt.$MER.$MIN.gff
 
-# md5sum $RPT_DIR/$FAS.rpt.19.50.gff
-# fc10b990e2169c344cda690562550a33  Potato_Repeats/PGSC0003DMS.rpt.19.50.gff
-# b0df2f553a2a1e6a5045c0ea090312ec  Potato_Repeats/PGSC0003DMB.rpt.19.50.gff
+md5sum $RPT_DIR/$FAS.rpt.$MER.$MIN.gff
 
-# md5sum $RPT_DIR/$FAS.rpt.41.50.gff
-# 6e1466fd5d25c92c82e6bf42b268009f  Potato_Repeats/PGSC0003DMS.rpt.41.50.gff
-# d41d8cd98f00b204e9800998ecf8427e  Potato_Repeats/PGSC0003DMB.rpt.41.50.gff
+## (See the cov option! There is no need to re-run suffixerator,
+## mkindex or search!)
+
+time zcat $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer |
+./tallymer2gff3.plx -k $MER \
+    --seq $FAS_DIR/$FAS.$FAP.header \
+    --cov 99 \
+    --gap 1 \
+    > $RPT_DIR/$FAS.rpt.$MER.99-gap1.gff
 
 
 
-
-
-## Finally mask the sequence using the repeats
+## 6) Optionally mask the input sequence using the repeats.
 
 ./maskSeq.plx \
-  -s $FAS_DIR/$FAS.fa \
+  -s $FAS_DIR/$FAS.$FAP \
   -f $RPT_DIR/$FAS.rpt.$MER.$MIN.gff \
-   > $FAS_DIR/$FAS.kfilt.$MER.$MIN.fa
+   > $FAS_DIR/$FAS.kfilt.$MER.$MIN.$FAP
 
-# md5sum $FAS_DIR/$FAS.kfilt.19.50.fa
-# 04a7c5141e51c39911476877329a493b  Potato_Assembly/PGSC0003DM/PGSC0003DMS.kfilt.19.50.fa
-# dc208fe83821bdc746e6a98531cce3ce  Potato_Assembly/PGSC0003DM/PGSC0003DMB.kfilt.19.50.fa
-
-# md5sum $FAS_DIR/$FAS.kfilt.41.50.fa
-# 9bb6d91c9cd04fedd6e817e82d695aa5  Potato_Assembly/PGSC0003DM/PGSC0003DMS.kfilt.41.50.fa
-# 6d6cb05b02b4bdd7cd16ed2d5e5a72a2  Potato_Assembly/PGSC0003DM/PGSC0003DMB.kfilt.41.50.fa
+md5sum $FAS_DIR/$FAS.kfilt.$MER.$MIN.fa
 
 
 
 
 
-## Optionally convert the GFF into a fasta file of repeat sequences
+## 7) Optionally convert the GFF into a fasta file of 'repeat
+## sequences'.
 
 ./gff2fasta.plx \
-  -s $FAS_DIR/$FAS.fa \
+  -s $FAS_DIR/$FAS.$FAP \
   -f $RPT_DIR/$FAS.rpt.$MER.$MIN.gff \
-   > $RPT_DIR/$FAS.rpt.$MER.$MIN.fa
+   > $RPT_DIR/$FAS.rpt.$MER.$MIN.$FAP
 
-# md5sum $RPT_DIR/$FAS.rpt.19.50.fa
-# e99486ce3c84d353df143140f8b521a3  Potato_Repeats/PGSC0003DMS.rpt.19.50.fa
-# 5e8830a3ea6fb232c3d071699fbee26f  Potato_Repeats/PGSC0003DMB.rpt.19.50.fa
-
-# md5sum $RPT_DIR/$FAS.rpt.41.50.fa
-# 18cb90fa3e44008a39eb825a5c7b0d2b  Potato_Repeats/PGSC0003DMS.rpt.41.50.fa
-# 33c87da8b7452dd95827e0cd042a7871  Potato_Repeats/PGSC0003DMB.rpt.41.50.fa
+md5sum $RPT_DIR/$FAS.rpt.$MER.$MIN.fa
 
 
 
 
 
-# ## Finishing touches: make the sequences NR and search them back
-# ## against the assembly...
+## 8) Finishing touches: make the sequences NR and search them back
+## against the assembly... (as a sanity check).
 
 
 
 
 
-# ## SGN pipeline:
+## 9) Finishing touches: submit new repeats to a repeat database?
+
+
+
+
+## NOTES:
+
+## SGN pipeline:
 
 #               basically, we take a model (for example, S. lycopersicum 
 #               genome), we run RepeatScout (it have 4 steps)
@@ -268,3 +241,5 @@ $GT tallymer search -v \
 
 # http://genomebiology.com/2008/9/3/R61
 # http://bioinformatics.oxfordjournals.org/cgi/content/abstract/21/suppl_1/i351
+
+
