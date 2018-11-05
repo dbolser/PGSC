@@ -22,6 +22,19 @@ RPT_DIR=Wheat_Repeats
 
 
 
+## Aegilops
+FAS_DIR=Aegilops_Assembly
+FAS=aegilops_tauschii
+FAP=fa
+
+# INDEX OUT DIR
+IDX_DIR=Aegilops_Indexes
+
+# REPEAT OUT DIR
+RPT_DIR=Aegilops_Repeats
+
+
+
 ## BARLEY
 FAS_DIR=Barley_Assembly
 FAS=Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel
@@ -37,8 +50,8 @@ RPT_DIR=Barley_Repeats
 
 ## TEST
 ll $FAS_DIR/$FAS.$FAP
-ll $IDX_DIR
-ll $RPT_DIR
+ll $IDX_DIR/
+ll $RPT_DIR/
 
 
 
@@ -58,13 +71,13 @@ $GT suffixerator -v \
   -db $FAS_DIR/$FAS.$FAP \
   -indexname $IDX_DIR/$FAS
 
-md5sum $IDX_DIR/$FAS.{al1,des,sds,esq,ssp,suf,prj,lcp,llv}
+#md5sum $IDX_DIR/$FAS.{al1,des,sds,esq,ssp,suf,prj,lcp,llv}
 
 
 
 
 
-## 2) Next we have a look at some kmer distributions using
+## 2) [OPTIONAL] Next we have a look at some kmer distributions using
 ## occratio. Note, this doesn't show the kmer frequency histogram, but
 ## just more general kmer counts against k.
 
@@ -104,7 +117,7 @@ MER=21
 
 ## Only care about kmers more frequent than this number in our index.
 MIN=10
-MIN=05
+#MIN=05
 
 time \
 $GT tallymer mkindex -v \
@@ -121,7 +134,8 @@ md5sum $IDX_DIR/$FAS.idx.$MER.$MIN.{mer,mct,mbd}
 
 
 ## 4) Finally we search a sequence against this index, with the idea
-## of identifying repeats in the sequence.
+## of identifying repeats in the sequence. This reports all regions of
+## the genome where a repeatative ($MIN) kmer begins.
 
 # ## Testing...
 
@@ -138,6 +152,8 @@ md5sum $IDX_DIR/$FAS.idx.$MER.$MIN.{mer,mct,mbd}
 # | ./tallymer2gff3.plx -seq PGSC0003DMS000000001.fa
 
 
+
+## Full...
 
 #echo \
 time \
@@ -180,6 +196,9 @@ time zcat $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer |
 
 
 
+## NOT DONE AS PART OF THE COMPARA
+
+
 ## 6) Optionally mask the input sequence using the repeats.
 
 ./maskSeq.plx \
@@ -192,6 +211,7 @@ md5sum $FAS_DIR/$FAS.kfilt.$MER.$MIN.fa
 
 
 
+## NOT DONE AS PART OF THE COMPARA
 
 ## 7) Optionally convert the GFF into a fasta file of 'repeat
 ## sequences'.

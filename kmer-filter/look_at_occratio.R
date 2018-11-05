@@ -79,6 +79,9 @@ abline(v=21)
 plot(uniq.n / all.n ~ k, data = my.dat)
 
 abline(v=21)
+abline(h=.8)
+abline(h=.75)
+abline(v=31)
 
 abline(v=16, col=2)
 abline(v=17, col=3)

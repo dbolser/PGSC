@@ -481,8 +481,8 @@ ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ hordeum_vulgare_core_37_90_3
 LOAD DATA LOCAL INFILE
   #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.05-gap1.tab"
   #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.10-gap1.tab"
-  #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab"
-  "Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.250-gap1.tab"
+  "Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.99-gap1.tab"
+  #"Hordeum_vulgare.Hv_IBSC_PGSB_v2.dna.toplevel.rpt.21.250-gap1.tab"
 INTO TABLE
   repeat_feature
     (seq_region_id, seq_region_start, seq_region_end, seq_region_strand, repeat_start, repeat_end, repeat_consensus_id, analysis_id, score)
@@ -491,6 +491,7 @@ INTO TABLE
 # Records:  22012044  Deleted: 0  Skipped: 0  Warnings: 0
 
 # Query OK, 21707781 rows affected (1 hour 44 min 0.51 sec)
+# Query OK, 21707781 rows affected (1 min 49.37 sec)
 # Records:  21707781  Deleted: 0  Skipped: 0  Warnings: 0
 
 # Query OK, 18145620 rows affected (1 hour 13 min 55.10 sec)
@@ -508,8 +509,8 @@ ensrw@mysql-eg-prod-3.ebi.ac.uk:4243/ triticum_aestivum_core_37_90_4
 LOAD DATA LOCAL INFILE
   #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.05-gap1.tab"
   #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.10-gap1.tab"
-  #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab"
-  "161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.250-gap1.tab"
+  "161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.99-gap1.tab"
+  #"161010_Chinese_Spring_v1.0_pseudomolecules.rpt.21.250-gap1.tab"
 INTO TABLE
   repeat_feature
     (seq_region_id, seq_region_start, seq_region_end, seq_region_strand, repeat_start, repeat_end, repeat_consensus_id, analysis_id, score)
@@ -518,6 +519,7 @@ INTO TABLE
 # Records:  80110278  Deleted: 0  Skipped: 0  Warnings: 0
 
 # Query OK, 71794855 rows affected (3 hours 16 min 45.42 sec)
+# Query OK, 71794855 rows affected (5 min 26.32 sec)
 # Records:  71794855  Deleted: 0  Skipped: 0  Warnings: 0
 
 # Query OK, 46964350 rows affected (2 hours 45 min 36.75 sec)
