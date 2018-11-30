@@ -176,6 +176,8 @@ md5sum $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer
 ## overlapping' kmers to call repetative regions (greater than a
 ## certain minuimum size).
 
+## For GAP (default = 3*$MER) and COV (default = $MIN) see below!
+
 time \
 ./tallymer2gff3.plx -k $MER \
   -s $FAS_DIR/$FAS.$FAP \
@@ -184,19 +186,26 @@ time \
 
 md5sum $RPT_DIR/$FAS.rpt.$MER.$MIN.gff
 
-## (See the cov option! There is no need to re-run suffixerator,
-## mkindex or search!)
+## (See the gap and cov option! There is no need to re-run
+## suffixerator, mkindex or search!)
+
+GAP=1
+COV=20
+COV=10
 
 time zcat $RPT_DIR/$FAS.rpt.$MER.$MIN.tmer |
 ./tallymer2gff3.plx -k $MER \
     --seq $FAS_DIR/$FAS.$FAP.header \
-    --cov 99 \
-    --gap 1 \
-    > $RPT_DIR/$FAS.rpt.$MER.99-gap1.gff
+    --cov $COV \
+    --gap $GAP \
+    > $RPT_DIR/$FAS.rpt.$MER.$COV-gap$GAP.gff
 
 
 
-## NOT DONE AS PART OF THE COMPARA
+## FOR LOADING INSTRUCTIONS SEE 'NOTES'. What follows is optional!
+
+
+
 
 
 ## 6) Optionally mask the input sequence using the repeats.
@@ -210,8 +219,6 @@ md5sum $FAS_DIR/$FAS.kfilt.$MER.$MIN.fa
 
 
 
-
-## NOT DONE AS PART OF THE COMPARA
 
 ## 7) Optionally convert the GFF into a fasta file of 'repeat
 ## sequences'.
